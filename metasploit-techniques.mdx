@@ -1,0 +1,65 @@
+---
+title: "Metasploit techniques"
+---
+
+# General Information
+
+The msf_path default path: /usr/share/metasploit-framework/
+
+The Metasploit module selection follows the format type/os/service/name, for example: auxiliary/scanner/smb/smb_version.
+
+To look up a module, we can use this command:
+
+search type:exploit service:smb name:eternalblue platform:windows
+
+- options — to check the options.
+- info — to check the information about a module.
+
+# Payloads
+
+Meterpreter sessions are only compatible with the Metasploit Framework. Moreover, the benefit of a Meterpreter session is that we have more functions we can use on the targeted victim.
+
+When we are using a module, we can use the command show payloads in order to check the payloads that are compatible with the selected module.
+
+# Encoders
+
+Encoding is a process used to change the content of a specific file/malware to bypass firewalls and antivirus. Moreover, within encoding we have something called iterations, which refers to how many times we are going to re-encode the file/malware.
+
+# MSF-DB
+
+The benefit of msfdb is that the output of scanning/exploiting/vulnerability assessment is saved automatically, without having to save it manually. Moreover, we are able to export the data and import it later if the database is corrupted.
+
+# MSF-Plugins
+
+Metasploit plugins are important because we can use local plugins inside Metasploit, as well as public plugins, giving us more opportunities to modify Metasploit and add more features.
+
+# Modules
+
+We are able to install or load modules from outside Metasploit itself.
+
+---
+
+## Useful Commands
+
+- `msfconsole` — launch the Metasploit console.
+- `search <term>` — search for modules (e.g. `search type:exploit service:smb name:eternalblue platform:windows`).
+- `use <module path>` — select a module to work with.
+- `show options` — display the options for the selected module.
+- `set <OPTION> <value>` — set an option's value.
+- `setg <OPTION> <value>` — set an option's value globally across modules.
+- `info` — show detailed information about the selected module.
+- `show payloads` — list payloads compatible with the selected module.
+- `set payload <payload path>` — select a payload for the module.
+- `show targets` — list available targets for an exploit.
+- `check` — verify whether a target is vulnerable without exploiting it.
+- `run` / `exploit` — execute the selected module.
+- `sessions -l` — list active sessions.
+- `sessions -i <id>` — interact with a specific session.
+- `background` — background the current session.
+- `msfvenom` — generate standalone payloads/encoded files.
+- `msfdb init` — initialize the Metasploit database.
+- `db_status` — check the database connection status.
+- `db_export` / `db_import` — export or import database data.
+- `hosts` / `services` / `vulns` — view discovered hosts, services, and vulnerabilities stored in the database.
+- `load <plugin>` — load a plugin into Metasploit.
+- `back` — exit the current module context.
