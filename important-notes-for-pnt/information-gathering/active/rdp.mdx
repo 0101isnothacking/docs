@@ -1,0 +1,43 @@
+---
+title: "RDP enumeration"
+description: "RDP enumeration cheat sheet for port 3389."
+---
+
+Remote Desktop Protocol (RDP) runs on TCP port 3389.
+
+<Warning>
+  Only perform brute force and connection attempts against systems you have explicit authorization to test.
+</Warning>
+
+## Port scan
+
+```sh
+nmap -p3389 $ip
+```
+
+## Nmap scripts
+
+```sh
+nmap -sV -sC $ip -p3389 --script rdp*
+```
+
+```sh
+# Metasploit RDP scanner
+use auxiliary/scanner/rdp/rdp_scanner
+```
+
+## Connect to RDP
+
+```sh
+# xfreerdp
+xfreerdp /u:username /p:"password" /v:$ip
+
+# Remmina
+sudo apt install remmina remmina-plugin-rdp
+```
+
+## Brute force
+
+```sh
+hydra -t 1 -V -f -l administrator -P passwords.txt rdp://$ip
+```

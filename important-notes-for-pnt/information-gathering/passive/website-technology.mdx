@@ -1,0 +1,40 @@
+---
+title: "Website technology"
+description: "Passively identify the technologies, frameworks, and defenses behind a target website."
+---
+
+Fingerprint the stack a website runs on before touching it. These checks are mostly passive and help you plan later enumeration.
+
+## Online tools
+
+<CardGroup cols={2}>
+  <Card title="BuiltWith" icon="globe" href="https://builtwith.com/">
+    Detects frameworks, analytics, hosting, and CMS in use.
+  </Card>
+
+  <Card title="Wappalyzer" icon="globe" href="https://www.wappalyzer.com/">
+    Identifies web technologies from the browser or API.
+  </Card>
+
+  <Card title="Wayback Machine" icon="clock-rotate-left" href="https://web.archive.org/">
+    Browse historical snapshots of the site and find old pages or endpoints.
+  </Card>
+</CardGroup>
+
+## Command-line checks
+
+```sh
+whatweb example.com        # Fingerprint web technologies
+curl -I example.com        # Inspect response headers
+wafw00f example.com        # Detect a web application firewall
+# Check /robots.txt for disallowed paths and hidden directories
+# reconspider for broader passive recon
+```
+
+## Automation
+
+[FinalRecon](https://www.kali.org/tools/finalrecon/) runs an all-in-one passive recon sweep.
+
+```sh
+finalrecon
+```

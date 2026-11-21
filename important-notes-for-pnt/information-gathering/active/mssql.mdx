@@ -1,0 +1,37 @@
+---
+title: "MSSQL enumeration"
+description: "Quick reference for enumerating Microsoft SQL Server on port 1433."
+---
+
+MSSQL (Microsoft SQL Server) is a closed-source SQL database. Its queries are similar to MySQL, but the syntax differs in places.
+
+MS SQL Server supports two types of authentication:
+
+1. **Windows Authentication:** SQL Server uses your Windows username and password.
+2. **SQL Server Authentication:** SQL Server has its own usernames and passwords.
+
+## Check open ports
+
+```sh
+nmap -p1433 <ip>
+```
+
+## Nmap default scripts
+
+```sh
+nmap -p1433 -sVC --script ms-sql-info,ms-sql-empty-password,ms-sql-config <ip>
+nmap -p1433 -sVC --script ms-sql* <ip>
+```
+
+## Connect to MSSQL
+
+```sh
+impacket-mssqlclient username@10.129.195.181 -windows-auth
+```
+
+## Dangerous settings
+
+- MSSQL clients not using encryption to connect to the MSSQL server.
+- The use of self-signed certificates when encryption is being used. It is possible to spoof self-signed certificates.
+- The use of [named pipes](https://docs.microsoft.com/en-us/sql/tools/configuration-manager/named-pipes-properties?view=sql-server-ver15).
+- Weak and default `sa` credentials. Admins may forget to disable this account.

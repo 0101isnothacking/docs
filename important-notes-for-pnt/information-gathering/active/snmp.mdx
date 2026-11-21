@@ -1,0 +1,44 @@
+---
+title: "SNMP enumeration"
+description: "Active enumeration commands and dangerous settings for the Simple Network Management Protocol."
+---
+
+SNMP (Simple Network Management Protocol) uses ports 161/UDP and 162.
+
+<Note>
+  SNMP uses the MIB like a database that defines the information available about network devices. The OID is the unique ID for each piece of data. A community string is similar to a password. It allows us to read information from a device or, depending on its permissions, write information to it through an SNMP connection. Community strings are used in SNMPv1 and SNMPv2c. SNMPv3, however, supports encryption and uses a different authentication method.
+</Note>
+
+## Check open ports
+
+```bash
+nmap ip -p161,162 -sU
+```
+
+## Nmap default script
+
+From this enumeration we can get useful information about the SNMP version and community string.
+
+```bash
+nmap ip -p161,162 -sU -sVC
+```
+
+## Connect to SNMP
+
+```bash
+snmpwalk -v2c -c community_id $ip
+```
+
+## Brute force
+
+```bash
+onesixtyone -c /usr/share/seclists/Discovery/SNMP/snmp.txt ip
+```
+
+## Dangerous settings
+
+| Setting | Description |
+| --- | --- |
+| `rwuser noauth` | Provides access to the full OID tree without authentication. |
+| `rwcommunity <community string> <IPv4 address>` | Provides access to the full OID tree regardless of where the requests were sent from. |
+| `rwcommunity6 <community string> <IPv6 address>` | Same access as with `rwcommunity` with the difference of using IPv6. |

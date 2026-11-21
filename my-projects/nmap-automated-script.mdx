@@ -1,0 +1,254 @@
+---
+title: "Nmap automated script"
+---
+
+### Intrduction
+
+**The Network Mapper Automation Tool is a Bash script that automates Nmap scans. It helps penetration testers organize their work by creating a structured project with separate folders for Output, Logs, and Error.**
+
+**The tool can use an existing project or create a new one. It performs a basic Nmap scan to find open ports and an advanced scan using the `-A` option. All scan results, logs, and errors are automatically saved in the correct folders, making it easier to manage and review the results of a penetration test.**
+
+Digram
+
+```text
+Digram
+Start Script
+      │
+      ▼
+Check if Nmap is installed
+      │
+      ▼
+Do you already have a project? (Y/N)
+      │
+ ┌────┴────┐
+ │         │
+Yes        No
+ │         │
+ ▼         ▼
+Ask for    Ask for project name
+project    Create project folder
+path        │
+ │          ▼
+ ▼      Create:
+Verify     Output/
+folder      Logs/
+exists      Error/
+ │
+ ▼
+Check if Output, Logs and Error exist
+ │
+ ├── Missing?
+ │      │
+ │      ├── Yes → Create them automatically
+ │      └── No → Continue
+ │
+ ▼
+Ready to scan hosts
+```
+
+The bash script.
+
+```text
+// bash
+#!/bin/bash
+
+#######################################################
+# Network Mapper Automation Script
+# Author: Omar
+#######################################################
+
+############################
+# Colors
+############################
+
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+BLUE="\033[0;34m"
+YELLOW="\033[1;33m"
+NC="\033[0m"
+
+############################
+# Banner
+############################
+
+clear
+
+echo -e "${BLUE}"
+echo "=============================================="
+echo "        Network Mapper Automation Tool"
+echo "=============================================="
+echo -e "${NC}"
+
+############################
+# Check Requirements
+############################
+
+echo "[*] Checking required tools..."
+
+if ! command -v nmap &>/dev/null
+then
+    echo -e "${RED}[ERROR] Nmap is not installed.${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}[OK] Nmap Installed${NC}"
+
+#################################################
+# Select Existing Project or Create New Project
+#################################################
+
+echo
+read -p "Do you already have a project? (y/n): " PROJECT_EXISTS
+
+case "$PROJECT_EXISTS" in
+
+    y|Y)
+
+        while true
+        do
+            read -p "Enter the full project path: " PROJECT
+
+            if [ -d "$PROJECT" ]; then
+                echo "[+] Project found."
+
+                # Check required folders
+                for folder in Output Logs Error
+                do
+                    if [ ! -d "$PROJECT/$folder" ]; then
+                        echo "[!] Missing folder: $folder"
+                        mkdir -p "$PROJECT/$folder"
+                        echo "[+] Created $folder"
+                    fi
+                done
+
+                break
+
+            else
+                echo "[ERROR] Project path does not exist."
+                echo "Please try again."
+            fi
+        done
+        ;;
+
+    *)
+
+        read -p "Enter new project name: " PROJECT
+
+        mkdir -p "$PROJECT"
+
+        mkdir -p "$PROJECT/Output"
+        mkdir -p "$PROJECT/Logs"
+        mkdir -p "$PROJECT/Error"
+
+        echo "[+] New project created."
+
+        ;;
+
+esac
+
+############################
+# Scan Loop
+############################
+
+while true
+do
+
+echo
+echo "----------------------------------------"
+
+read -p "Target IP: " TARGET
+read -p "Machine Name: " HOST
+
+############################
+# Create Machine Structure
+############################
+
+mkdir -p "$PROJECT/Logs/$HOST"
+mkdir -p "$PROJECT/Error/$HOST"
+
+mkdir -p "$PROJECT/Output/$HOST/Basic"
+mkdir -p "$PROJECT/Output/$HOST/Advanced"
+
+############################
+# Log Information
+############################
+
+LOGFILE="$PROJECT/Logs/$HOST/script.log"
+CMDLOG="$PROJECT/Logs/$HOST/commands.log"
+
+echo "=====================================" >> "$LOGFILE"
+echo "Date: $(date)" >> "$LOGFILE"
+echo "Target: $TARGET" >> "$LOGFILE"
+echo "Host: $HOST" >> "$LOGFILE"
+echo "=====================================" >> "$LOGFILE"
+
+############################
+# Status
+############################
+
+echo
+echo -e "${YELLOW}Current Status${NC}"
+echo "Project : $PROJECT"
+echo "Target  : $TARGET"
+echo "Host    : $HOST"
+echo
+
+############################
+# Basic Scan
+############################
+
+echo "[*] Running Basic Scan..."
+
+echo "nmap $TARGET" >> "$CMDLOG"
+
+nmap "$TARGET" \
+-oA "$PROJECT/Output/$HOST/Basic/basic_scan" \
+2> "$PROJECT/Error/$HOST/basic_error.log"
+
+echo "[+] Basic Scan Complete"
+
+############################
+# Advanced Scan
+############################
+
+echo
+echo "[*] Running Advanced Scan..."
+
+echo "nmap -A $TARGET" >> "$CMDLOG"
+
+nmap -A "$TARGET" \
+-oA "$PROJECT/Output/$HOST/Advanced/advanced_scan" \
+2> "$PROJECT/Error/$HOST/advanced_error.log"
+
+echo "[+] Advanced Scan Complete"
+
+############################
+# Finish Log
+############################
+
+echo "$(date) - Finished scanning $HOST" >> "$LOGFILE"
+
+############################
+# Another Host?
+############################
+
+echo
+read -p "Scan another host? (y/n): " CHOICE
+
+case $CHOICE in
+    y|Y)
+        ;;
+    *)
+        break
+        ;;
+esac
+
+done
+
+echo
+echo -e "${GREEN}=====================================${NC}"
+echo -e "${GREEN}All scans completed.${NC}"
+echo -e "${GREEN}Results stored in project:${NC} $PROJECT"
+```
+
+This project was created using the assist of AI. 

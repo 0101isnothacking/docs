@@ -1,0 +1,33 @@
+---
+title: "Subdomain hunting"
+description: "Discover subdomains of a target domain using enumeration tools and certificate transparency."
+---
+
+Gather subdomains to expand the attack surface of a target domain.
+
+## Sublist3r
+
+[Sublist3r](https://www.kali.org/tools/sublist3r/) enumerates subdomains from public sources.
+
+```sh
+sublist3r -d example.com
+```
+
+## crt.sh (certificate transparency)
+
+[crt.sh](https://crt.sh/) finds subdomains from issued TLS certificates.
+
+```sh
+curl -s "https://crt.sh/?q=example.com&output=json" | jq -r '.[]'
+```
+
+## httprobe
+
+[httprobe](https://www.kali.org/tools/httprobe/) checks which discovered subdomains are alive.
+
+```sh
+cat domains.txt | httprobe -p http:81 -p https:8443
+cat domains.txt | httprobe -c 50              # Concurrency
+cat domains.txt | httprobe -t 20000           # Timeout in ms
+cat domains.txt | httprobe --prefer-https     # Only probe HTTPS
+```

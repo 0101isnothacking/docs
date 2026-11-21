@@ -11,10 +11,83 @@
   "navigation": {
     "pages": [
       {
-        "group": "Getting Started",
+        "group": "./",
         "pages": [
-          "index",
-          "quickstart"
+          "index"
+        ]
+      },
+      {
+        "group": "Important notes for PNT",
+        "pages": [
+          {
+            "group": "FIle transfer",
+            "pages": [
+              {
+                "group": "Windows",
+                "pages": [
+                  "important-notes-for-pnt/f-ile-transfer/windows/commands"
+                ]
+              },
+              {
+                "group": "Linux",
+                "pages": [
+                  "important-notes-for-pnt/f-ile-transfer/linux/commands"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Information gathering",
+            "pages": [
+              {
+                "group": "Active",
+                "pages": [
+                  "important-notes-for-pnt/information-gathering/active/host-discovery",
+                  "important-notes-for-pnt/information-gathering/active/port-scanning-using-nmap",
+                  "important-notes-for-pnt/information-gathering/active/https",
+                  "important-notes-for-pnt/information-gathering/active/imap-pop3",
+                  "important-notes-for-pnt/information-gathering/active/ipmi",
+                  "important-notes-for-pnt/information-gathering/active/kerberos",
+                  "important-notes-for-pnt/information-gathering/active/ldap",
+                  "important-notes-for-pnt/information-gathering/active/mssql",
+                  "important-notes-for-pnt/information-gathering/active/mysql",
+                  "important-notes-for-pnt/information-gathering/active/nfs",
+                  "important-notes-for-pnt/information-gathering/active/oracle-tns",
+                  "important-notes-for-pnt/information-gathering/active/rdp",
+                  "important-notes-for-pnt/information-gathering/active/smb",
+                  "important-notes-for-pnt/information-gathering/active/smtp",
+                  "important-notes-for-pnt/information-gathering/active/snmp",
+                  "important-notes-for-pnt/information-gathering/active/ssh",
+                  "important-notes-for-pnt/information-gathering/active/winrm",
+                  "important-notes-for-pnt/information-gathering/active/dns",
+                  "important-notes-for-pnt/information-gathering/active/ftp"
+                ]
+              },
+              {
+                "group": "Passive",
+                "pages": [
+                  "important-notes-for-pnt/information-gathering/passive/email-discovery",
+                  "important-notes-for-pnt/information-gathering/passive/google-dorking",
+                  "important-notes-for-pnt/information-gathering/passive/subdomain-hunting",
+                  "important-notes-for-pnt/information-gathering/passive/website-technology"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "group": "My_projects",
+        "pages": [
+          "my-projects/nmap-automated-script",
+          "my-projects/penetration-testing-navigator"
+        ]
+      },
+      {
+        "group": "Research",
+        "pages": [
+          "research/qubes-os",
+          "research/wifi-pineapple-cloner"
         ]
       }
     ],

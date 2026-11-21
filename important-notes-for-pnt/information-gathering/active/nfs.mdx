@@ -1,0 +1,87 @@
+---
+title: "NFS enumeration"
+description: "Active enumeration commands and dangerous settings for the Network File System protocol."
+---
+
+NFS (Network File System) typically runs on ports 111 and 2049.
+
+## Check default open ports
+
+```bash
+nmap -p111,2049 $ip
+```
+
+## Banner grabbing
+
+```bash
+nmap -sVC -A -p111,2049 $ip
+netcat -nv $ip 111/2049
+netexec nfs $ip
+nmap -p111,2049 $ip --script nfs*
+```
+
+## List shares
+
+```bash
+netexec nfs $ip --shares
+showmount -e $ip
+```
+
+```text
+msf auxiliary/scanner/nfs/nfsmount
+```
+
+## Create a local mount point
+
+```bash
+mkdir shared
+```
+
+## Mount shares
+
+Mount all shares into the current directory:
+
+```bash
+sudo mount -t nfs $ip:/ . -o nolock
+```
+
+Mount a specific share:
+
+```bash
+sudo mount -t nfs $ip:/ /mnt/shareablefolder -o nolock
+```
+
+## Check UID/GID
+
+```bash
+ls -lahn
+```
+
+## Replica of the shares
+
+```bash
+sudo cp -r /folder .
+```
+
+## Unmount the shares
+
+```bash
+sudo umount /mnt/shareablefolder
+```
+
+## Dangerous settings
+
+| Setting | Description |
+| --- | --- |
+| `rw` | Read and write permissions. |
+| `insecure` | Ports above 1024 will be used. |
+| `nohide` | If another file system was mounted below an exported directory, this directory is exported by its own exports entry. |
+| `no_root_squash` | All files created by root are kept with the UID/GID 0. |
+
+## Useful commands
+
+List the contents of the current folder recursively:
+
+```bash
+tree
+```

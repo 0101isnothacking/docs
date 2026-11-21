@@ -1,0 +1,86 @@
+---
+title: "Linux file transfer"
+sidebarTitle: "Commands"
+description: "Transfer files between Linux systems during security assessments using Wget, curl, SCP, and scripting languages."
+---
+
+## Introduction
+
+File transfer is an essential skill in system administration, penetration testing, and cybersecurity. During security assessments, files often need to move between Linux systems to exchange tools, scripts, logs, and other resources.
+
+This page covers common methods for transferring files on **Linux**, including Wget, curl, SSH/SCP, and one-liners in several programming languages, plus uploading over SSH and a web interface.
+
+<Warning>
+  Only use these techniques against systems you own or have explicit authorization to test. Practise in authorized lab environments.
+</Warning>
+
+## Download methods
+
+### Wget and curl
+
+```sh
+wget url -O /file_name
+curl -o file_name url
+```
+
+### Execute without downloading
+
+Pipe a remote file straight into an interpreter instead of saving it to disk:
+
+```sh
+curl url | bash
+wget -qO- url | python3
+```
+
+### SSH (SCP)
+
+```sh
+scp username@ip:/root/myroot.txt .
+```
+
+### Programming language one-liners
+
+Useful when common download tools are unavailable on the target.
+
+```sh
+# Python 2.7
+python2.7 -c 'import urllib;urllib.urlretrieve("URL/file", "File_name")'
+
+# Python 3
+python3 -c 'import urllib.request;urllib.request.urlretrieve("URL/file", "File_name")'
+
+# PHP
+php -r '$file = file_get_contents("URL/file"); file_put_contents("File_name", $file);'
+
+# Ruby
+ruby -e 'require "net/http"; File.write("file_name", Net::HTTP.get(URI.parse("URL/file")))'
+
+# Perl
+perl -e 'use LWP::Simple; getstore("URL/file", "file_name");'
+```
+
+## Upload methods
+
+### SSH (SCP)
+
+```sh
+scp /file_to_upload username@ip:/path_to_save
+```
+
+### Web interface
+
+<Steps>
+  <Step title="Install uploadserver on Linux">
+    ```sh
+    sudo /venv/bin/pip3 install uploadserver
+    ```
+  </Step>
+  <Step title="Start the server">
+    ```sh
+    sudo /venv/bin/python3 -m uploadserver
+    ```
+  </Step>
+  <Step title="Upload the file">
+    Open the web interface and upload the file: `http://ip:port/upload`
+  </Step>
+</Steps>

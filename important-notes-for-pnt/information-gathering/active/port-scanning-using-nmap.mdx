@@ -1,0 +1,234 @@
+---
+title: "Port scanning with Nmap"
+description: "Network Mapper (Nmap) commands for host discovery, port scanning, service enumeration, and evasion."
+---
+
+Network Mapper (Nmap) commands for scanning.
+
+## About Nmap
+
+- Nmap scripts are programmed using Lua programming language
+- The default nmap scan type is TCP
+- The default nmap port scan is 1000
+- The default UDP scan scans all open ports instead of 1000
+- common nmap states:
+  - open
+  - closed
+  - filtered (No answer)
+  - open | filtered (It is 60% open, but the connection is 100% established)
+
+#### Default nmap syntax
+
+- nmap \<type> \<arguments> target_ip
+
+#### Basic Scans
+
+**Top 1000 TCP ports**
+
+```bash
+nmap TARGET
+```
+
+**Multiple targets**
+
+```bash
+nmap TARGET1 TARGET2
+```
+
+**All TCP ports**
+
+```bash
+nmap -p- TARGET
+```
+
+**Top N ports**
+
+```bash
+nmap --top-ports 100 TARGET
+```
+
+**Specific ports**
+
+```bash
+nmap -p80,443,445 TARGET
+```
+
+**Port range**
+
+```bash
+nmap -p1-1000 TARGET
+```
+
+---
+
+## Scan Types
+
+**SYN scan**
+
+```bash
+nmap -sS TARGET
+```
+
+**TCP Connect**
+
+```bash
+nmap -sT TARGET
+```
+
+**UDP**
+
+```bash
+nmap -sU TARGET
+```
+
+**ACK / firewall filtering**
+
+```bash
+nmap -sA TARGET
+```
+
+**ICMP host discovery**
+
+```bash
+nmap -PE TARGET
+```
+
+**Skip host discovery**
+
+```bash
+nmap -Pn TARGET
+```
+
+---
+
+## Service Enumeration
+
+**Service/version detection**
+
+```bash
+nmap -sV -p<PORTS> TARGET
+```
+
+**OS detection**
+
+```bash
+nmap -O TARGET
+```
+
+**Default NSE scripts**
+
+```bash
+nmap -sC -p<PORTS> TARGET
+```
+
+**Service + version + default scripts**
+
+```bash
+nmap -sC -sV -p<PORTS> TARGET
+```
+
+---
+
+## NSE
+
+**Banner**
+
+```bash
+nmap --script=banner -p<PORTS> TARGET
+```
+
+**Targeted script**
+
+```bash
+nmap --script=<SCRIPT> -p<PORT> TARGET
+```
+
+**Examples**
+
+```bash
+nmap --script=http-enum -p80,443 TARGET
+nmap --script=smb-enum* -p445 TARGET
+```
+
+---
+
+## Save Results
+
+**Save all formats**
+
+```bash
+nmap -oA TARGET TARGET_IP
+```
+
+**XML → HTML**
+
+```bash
+xsltproc TARGET.xml -o TARGET.html
+```
+
+---
+
+## Troubleshooting
+
+**Verbose**
+
+```bash
+nmap -v TARGET
+nmap -vv TARGET
+```
+
+**Packet trace**
+
+```bash
+nmap --packet-trace TARGET
+```
+
+**Disable DNS**
+
+```bash
+nmap -n TARGET
+```
+
+---
+
+## Firewall / Filtering
+
+**Change source port**
+
+```bash
+nmap --source-port 53 TARGET
+```
+
+**Decoys**
+
+```bash
+nmap -D RND:5 TARGET
+```
+
+**Skip discovery + source port + decoys**
+
+```bash
+nmap -Pn --source-port 53 -D RND:5 TARGET
+```
+
+**Ncat source port**
+
+```bash
+ncat -nv --source-port 53 TARGET PORT
+```
+
+## Useful commands
+
+```bash
+nmap -sC -sV 172.21.0.0
+nmap -Pn -sC -sV -p- 172.21.0.0
+nmap -sV -Pn 172.21.0.0
+nmap -T4 -sC -sV 172.21.0.0
+
+# Full aggressive scan of a subnet, saved to all formats
+nmap -vv -Pn -A -sC -sS -T4 -p- 172.21.10.0/24 -oA fullscan
+
+# Tuned full scan from a host list
+nmap -oA fullscan-aggressive -T4 -vvv --max-rtt-timeout 300ms --max-retries 3 \
+  --host-timeout 30m --max-scan-delay 500ms -Pn -p- --version-intensity 1 -iL fullscan.txt
+```

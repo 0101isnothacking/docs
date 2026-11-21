@@ -1,0 +1,77 @@
+---
+title: "FTP enumeration"
+description: "FTP enumeration and file transfer commands for ports 20 and 21."
+---
+
+FTP (File Transfer Protocol) uses ports 20 and 21.
+
+## Important information
+
+Response code **220** means the connection is successfully established.
+
+## Check default open port
+
+```bash
+nmap -p20,21 <ip>
+```
+
+## Banner grabbing
+
+<Note>
+  Sometimes you have to wait 10 to 60 seconds to get the banner.
+</Note>
+
+```bash
+netcat -nv <ip> 21
+nmap -sV -p20,21 <ip>
+nxc ftp <ip>
+sudo nmap --script=ftp-syst.nse -p20,21 <ip>
+```
+
+## Check anonymous login
+
+```bash
+sudo nmap --script=ftp-anon.nse -p20,21 <ip>
+ftp <ip>
+# login with anonymous:anonymous
+msfconsole -q -x "use auxiliary/scanner/ftp/ftp_anonymous"
+```
+
+## Check files and folders
+
+```bash
+ls -all
+```
+
+## Download and upload files
+
+```bash
+mget <file-or-folder>
+put <file-or-folder>
+```
+
+## Dangerous settings
+
+| Setting | Description |
+| --- | --- |
+| `anonymous_enable=YES` | Allowing anonymous login? |
+| `anon_upload_enable=YES` | Allowing anonymous to upload files? |
+| `anon_mkdir_write_enable=YES` | Allowing anonymous to create new directories? |
+| `no_anon_password=YES` | Do not ask anonymous for password? |
+| `anon_root=/home/username/ftp` | Directory for anonymous. |
+| `write_enable=YES` | Allowed to change the content of a file. |
+
+## Useful commands
+
+```bash
+ls          # List current files/folders in the current directory
+mget *      # Download everything
+status      # Show FTP status
+syst        # Gather information about the system
+debug       # List backend commands
+LIST        # List everything
+trace       # Trace packets
+quit        # Stop the connection
+bye         # Stop the connection
+wget -m --no-passive ftp://anonymous:anonymous@<ip>
+```

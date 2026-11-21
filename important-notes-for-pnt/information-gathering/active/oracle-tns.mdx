@@ -1,0 +1,54 @@
+---
+title: "Oracle TNS enumeration"
+description: "Quick reference for enumerating Oracle TNS on port 1521/TCP, including SID brute force and sqlplus commands."
+---
+
+Oracle Transparent Network Substrate (TNS) operates on TCP port 1521. To connect to an Oracle database, you need a username, password, and a System Identifier (SID) for the database name.
+
+<Warning>
+  Only run SID brute force against systems you are authorized to test.
+</Warning>
+
+## Check open port and service
+
+```sh
+sudo nmap <ip> -p1521 -sV -A
+```
+
+## Brute force SID
+
+Because the SID is required to establish a connection, SID brute-forcing is sometimes essential during the enumeration phase of a penetration test.
+
+```sh
+sudo nmap <ip> -p1521 --script oracle-sid-brute
+odat all -s <ip>
+odat sidguesser -s <ip>
+```
+
+## Connect to the database
+
+If you encounter a library path error, fix it with:
+
+```sh
+sudo sh -c "echo /usr/lib/oracle/12.2/client64/lib > /etc/ld.so.conf.d/oracle-instantclient.conf"; sudo ldconfig
+```
+
+Then connect with sqlplus:
+
+```sh
+sqlplus username/password@<ip>/DB_SID
+sqlplus username/password@<ip>/DB_SID as sysdba
+```
+
+## Commands
+
+```sql
+-- Check a user password
+select name, password from sys.user$;
+
+-- Check the user privileges
+select * from user_role_privs;
+
+-- List all tables
+select table_name from all_tables;
+```
