@@ -7,7 +7,6 @@
     "light": "#ED512A",
     "dark": "#E51E1B"
   },
-  "favicon": "/favicon.svg",
   "navigation": {
     "pages": [
       {
@@ -105,10 +104,6 @@
         }
       ]
     }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
   },
   "navbar": {
     "links": [
