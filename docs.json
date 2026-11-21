@@ -131,5 +131,12 @@
     "light": "/images/chess-knight-svgrepo-com.svg",
     "dark": "/images/chess-knight-svgrepo-com.svg"
   },
-  "description": "0101isnothacking is Omar Al Haffar’s personal cybersecurity knowledge base and professional portfolio. It brings together hands-on penetration testing notes, lab write-ups, and quick references on topics like network discovery and Windows and Linux file transfers. The site also showcases personal security projects, research, and Omar’s progress toward the Hack The Box Certified Penetration Testing Specialist (CPTS) certification."
+  "description": "0101isnothacking is Omar Al Haffar’s personal cybersecurity knowledge base and professional portfolio. It brings together hands-on penetration testing notes, lab write-ups, and quick references on topics like network discovery and Windows and Linux file transfers. The site also showcases personal security projects, research, and Omar’s progress toward the Hack The Box Certified Penetration Testing Specialist (CPTS) certification.",
+  "redirects": [
+    {
+      "source": "/docs",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
 }
