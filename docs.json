@@ -95,12 +95,6 @@
           "research/qubes-os",
           "research/wifi-pineapple-cloner"
         ]
-      },
-      {
-        "group": "test",
-        "pages": [
-          "test"
-        ]
       }
     ]
   },
