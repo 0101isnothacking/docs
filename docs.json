@@ -136,5 +136,14 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
+  },
+  "logo": {
+    "light": "/images/chess-knight-svgrepo-com.svg",
+    "dark": "/images/chess-knight-svgrepo-com.svg",
+    "href": "https://non-9fcb5a21.mintlify.site/docs"
+  },
+  "favicon": {
+    "light": "/images/chess-knight-svgrepo-com.svg",
+    "dark": "/images/chess-knight-svgrepo-com.svg"
   }
 }
