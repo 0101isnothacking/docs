@@ -98,7 +98,9 @@
       },
       {
         "group": "test",
-        "pages": []
+        "pages": [
+          "test"
+        ]
       }
     ]
   },
