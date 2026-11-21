@@ -1,0 +1,27 @@
+---
+title: "Shells & Payloads"
+description: "Distinguish shells, exploits, and payloads, and use connection direction to tell bind shells from reverse shells."
+---
+
+A **shell** interprets commands. Bash and Zsh are common shells on Linux; PowerShell and Command Prompt (`cmd.exe`) are common on Windows. The operating system alone does not tell you which command syntax a session accepts. For example, a Windows user can open either PowerShell or Command Prompt.
+
+## Exploit vs. payload
+
+An **exploit** takes advantage of a vulnerability. A **payload** is the code that performs the intended action. For example, if an attacker exploits a flaw in a web application and the resulting code opens a shell, the exploit is what takes advantage of the flaw, the payload is the code that opens the shell, and the shell is what interprets subsequent commands. Not every payload opens a shell.
+
+## Bind shell vs. reverse shell
+
+Both provide access to a shell over a network. To tell them apart, identify the host running the shell and ask **who initiated the connection**.
+
+| Shell type | Who initiates the connection? | What the shell host does |
+| --- | --- | --- |
+| Bind shell | The remote client | Listens for an inbound connection |
+| Reverse shell | The host running the shell | Opens an outbound connection to a remote listener |
+
+Once connected, commands and output can flow in both directions. The term _reverse_ describes how the connection starts, not how commands travel. An outbound connection does not automatically bypass a firewall or evade endpoint monitoring.
+
+## Web shells
+
+A **web shell** is server-side code that accepts commands through web requests. Unlike _bind_ and _reverse_, the term _web shell_ describes the interface used to send commands, not which host initiates a separate shell connection.
+
+When investigating a suspected web shell, correlate web access logs with process creation events on the server. For example, a request to an unfamiliar script followed immediately by the web server process starting `cmd.exe` is worth investigating. Neither event alone proves that a web shell is present.

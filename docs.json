@@ -72,6 +72,12 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Important knowledge",
+            "pages": [
+              "important-notes-for-pnt/important-knowledge/shells-and-payloads"
+            ]
           }
         ]
       },
